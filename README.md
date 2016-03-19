@@ -1,5 +1,5 @@
 # Autopeeper #
-## Version: 0.2 
+## Version: 0.21 
 Creator: @ZephrFish 
 
 Description
@@ -10,11 +10,13 @@ Usage:
 python autopeeper.py [-h] [-f FILE] [-d] [-v VERBOSE] [-o OUTPUT DIRECTORY]
 
 optional arguments:
-  -h, --help           show this help message and exit
-  -f FILE              targets file, file containing target urls
-  -d                   debugging mode, turns on debugging
-  -v VERBOSE           verbose mode
-  -o OUTPUT DIRECTORY  output directory
+ 
+
+> -h, --help     show this help message and exit   
+> -f FILE          targets file, file containing target urls 
+> -d                  debugging mode, turns on debugging  
+> -v VERBOSE           verbose mode
+> -o OUTPUT DIRECTORY  output directory
 
 
 # Disclaimer
