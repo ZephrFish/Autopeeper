@@ -62,19 +62,20 @@ def checking():
 	
 
 # Main method, to check input parameters
-if __name__ == "__main__":
+if __name__ == '__main__':
    
         parser = ArgumentParser(description="Tool for Screenshotting Web Applications Automatically")
 
         # Requried Options
-        parser.add_argument("file", help="File to check version of")
-        parser.add_argument("outdir", help="Directory of local git repository")
+        parser.add_argument("file", dest="targets_file" help="File to check version of")
+        parser.add_argument("outdir", dest="out_dir" help="Directory of local git repository")
 
         # Optional Optiosn
         parser.add_argument("-v", "--verbose", action="store_true",help="verbose mode")
         parser.add_argument("-d", "--debugging", action="store_true", help='debugging mode, turns on debugging', dest='debugging')
 	parser.add_argument("-s", "--single", action="store_true",help="single url mode")
         args = parser.parse_args()
+	output = args.out_dir
 		
 		# Check file exists
 		# if os.path.isfile(args.file)==False:
