@@ -1,3 +1,4 @@
+# Script does port scanning with scapy, will be adapted for autopeeper
 import logging
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
 
