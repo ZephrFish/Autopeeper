@@ -46,8 +46,10 @@ def debugging():
 		else:
 			return print('[-] Debugging Enabled [Disabled]');
 
-def verbose():
+# Verbose Mode print out things
+def verbose(v):
 		if args.verbose:
+			print v
 			
 			
 
@@ -61,7 +63,7 @@ def checking():
 	# Check output exists
 	
 
-# Main method, to check input parameters
+# Argument Parsing
 if __name__ == '__main__':
    
         parser = ArgumentParser(description="Tool for Screenshotting Web Applications Automatically")
@@ -73,9 +75,9 @@ if __name__ == '__main__':
         # Optional Optiosn
         parser.add_argument("-v", "--verbose", action="store_true",help="verbose mode")
         parser.add_argument("-d", "--debugging", action="store_true", help='debugging mode, turns on debugging', dest='debugging')
-	parser.add_argument("-s", "--single", action="store_true",help="single url mode")
+		parser.add_argument("-s", "--single", action="store_true",help="single url mode")
         args = parser.parse_args()
-	output = args.out_dir
+		output = args.out_dir
 		
 		# Check file exists
 		# if os.path.isfile(args.file)==False:
