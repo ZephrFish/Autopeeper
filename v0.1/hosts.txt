@@ -1,5 +1,0 @@
-example.com
-github.com
-google.com
-facebook.com
-zerosec.co.uk
