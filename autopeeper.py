@@ -1,92 +1,127 @@
-# Autopeeper v0.21
-# Working Copy
-# Automated Web Application Screenshotter
-# ZephrFish 2016
-import sys
-import os
-import subprocess
-import argparse
-from argparse import ArgumentParser
+# Autopeeper v0.24
+# @ZephrFish
+# Still a work in progress
+#
+#
+#
+#
 
-# File & Output Path
-file = None
-outdir = None
+import argparse
+import subprocess
+import os
+import sys
+
+# Global Variables
+infile = ''
+outdir = ''
 
 # Autopeeper Logo Echo
 print('''
-                _                                                 ___   ___  __ 
-     /\        | |                                               / _ \ |__ \/_ |
-    /  \  _   _| |_ ___  _ __   ___  ___ _ __   ___ _ __  __   _| | | |   ) || |
-   / /\ \| | | | __/ _ \| '_ \ / _ \/ _ \ '_ \ / _ \ '__| \ \ / / | | |  / / | |
-  / ____ \ |_| | || (_) | |_) |  __/  __/ |_) |  __/ |     \ V /| |_| | / /_ | |
- /_/    \_\__,_|\__\___/| .__/ \___|\___| .__/ \___|_|      \_/  \___(_)____||_|
-                        | |             | |                                     
-          ______        |_|          ___|_| _     _                             
-    ____ |___  /         | |        |  ____(_)   | |                            
-   / __ \   / / ___ _ __ | |__  _ __| |__   _ ___| |__                          
-  / / _` | / / / _ \ '_ \| '_ \| '__|  __| | / __| '_ \                         
- | | (_| |/ /_|  __/ |_) | | | | |  | |    | \__ \ | | |                        
-  \ \__,_/_____\___| .__/|_| |_|_|  |_|    |_|___/_| |_|                        
-   \____/          | |                                                          
-                   |_|
-    This is Still a work in progress - a learning project
+                _                                                 ___   ___  _  _
+     /\        | |                                               / _ \ |__ \| || |
+    /  \  _   _| |_ ___  _ __   ___  ___ _ __   ___ _ __  __   _| | | |   ) | || |_
+   / /\ \| | | | __/ _ \| '_ \ / _ \/ _ \ '_ \ / _ \ '__| \ \ / / | | |  / /|__   _|
+  / ____ \ |_| | || (_) | |_) |  __/  __/ |_) |  __/ |     \ V /| |_| | / /_   | |
+ /_/    \_\__,_|\__\___/| .__/ \___|\___| .__/ \___|_|      \_/  \___(_)____|  |_|
+                        | |             | |
+                        |_|             |_|
+@ZephrFish v0.24
+
 ''')
+def whereiscutycapt(name):
+    try:
+        devnull = open(os.devnull)
+        subprocess.Popen([name], stdout=devnull, stderr=devnull).communicate()
+    except OSError as e:
+        if e.errno == os.errno.ENOENT:
+            return False
+    return True
 
-# Defining Functions
+def initialize():
+    if whereiscutycapt(cutycapt)==False:
+        verbose('[+] Setting up dependencies')
+        os.system('sudo apt-get install subversion libqt4-webkit libqt4-dev g++')
+        os.system('svn co svn://svn.code.sf.net/p/cutycapt/code/ cutycapt')
+        os.system('cd cutycapt/CutyCapt')
+        os.system('qmake')
+        os.system('make')
+        verbose('[!] Initialised...')
+    else:
+        print('[!] initialized...')
 
-# Debugging Function
-def debugging():
-		if args.debugging: 
-			print('[+] Debugging [Enabled] Disabled');
-			targets = open(file);
-		num_lines = sum(1 for line in open(file));
-        print "The output from %r is shown: " % file;
-        print targets.read();
-        print "There are a total of %r targets in the file provided " % num_lines;
-		else:
-			return print('[-] Debugging Enabled [Disabled]');
+# Single Target Mode
+def singleURL():
+    url = input("Enter URL>")
+    single=[]
+    portList = [80,443,5800,8080,9090,10000]
+    for port in portList:
+        verbose('[+] hosts running on port %r' % str(port))
+        verbose('https://' + url + ':'+ str(port))
+        verbose('http://' + url + ':' + str(port))
+        single.append('https://' + url + ':'+ str(port))
+        single.append('http://' + url + ':' + str(port))
+        verbose(single)
+    for target in single:
+        os.system('cutycapt --url=%r --out=%r --delay=100' % (target, outdir))
 
-# Verbose Mode print out things
+# File Mode
+def file():
+    targets = open(infile, 'r').readlines()
+    domains=[]
+    for domain in targets:
+         portList = [80,443,5800,8080,9090,10000]
+         for port in portList:
+             verbose('Target Port %r' % str(port))
+             verbose('https://' + str(domain) + ':'+ str(port))
+             verbose('http://' + str(domain) + ':'+ str(port))
+             domains.append('https://' + str(domain) + ':'+ str(port))
+             domains.append('http://' + str(domain) + ':' + str(port))
+             verbose(domains)
+    for target in domains:
+        os.system('cutycapt --url=%r --out=%r --delay=100' % (target, outdir))
+
+# Verbose Mode
 def verbose(v):
-		if args.verbose:
-			print v
-			
-			
+    if args.verbose:
+        print(v)
 
-def scanning():
-	# Scanning Function
+def main():
+    # Check Dependencies
+    initialize()
 
-def capture():
-	# Screenshotting Function
-
-def checking():
-	# Check output exists
-	
+    # Single URL Mode
+    if args.url:
+        verbose('[!] Single URL Mode Enabled')
+        singleURL()
+    # File Mode
+    elif args.infile:
+        verbose('[!] Batch Mode Enabled')
+        file()
+    else:
+        print('[!] No Flags Given')
+        print('[!] Quitting...')
+        quit()
 
 # Argument Parsing
-if __name__ == '__main__':
-   
-        parser = ArgumentParser(description="Tool for Screenshotting Web Applications Automatically")
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description='Domain Lister',
+        prog="lister.py",
+        usage='%(prog)s [options]'
+    )
+    # Required Parameters
+    parser.add_argument("infile", help='targets file to scan & screenshot')
+    parser.add_argument("outdir",help='output directory for results')
 
-        # Requried Options
-        parser.add_argument("file", dest="targets_file" help="File to check version of")
-        parser.add_argument("outdir", dest="out_dir" help="Directory of local git repository")
 
-        # Optional Optiosn
-        parser.add_argument("-v", "--verbose", action="store_true",help="verbose mode")
-        parser.add_argument("-d", "--debugging", action="store_true", help='debugging mode, turns on debugging', dest='debugging')
-		parser.add_argument("-s", "--single", action="store_true",help="single url mode")
-        args = parser.parse_args()
-		output = args.out_dir
-		
-		# Check file exists
-		# if os.path.isfile(args.file)==False:
-		#	parser.print_help()
-		#	print "[!] Targets File does not exist [!]"
-		#	sys.exit(-1)
-		
-		# check that the directory exists
-		#if os.path.isdir(args.outdir)==False:
-		#	parser.print_help()
-		#	print "[!] Output directory does not exist [!]"
-		#	sys.exit(-1)
+    # Debug & Verbose Mode
+    parser.add_argument('--verbose', action='store_true', help='turn on verbose mode')
+    parser.add_argument('--debug', action='store_true', help='turn on debug')
+    parser.add_argument('--url', action='store_true', help='Single URL Mode')
+    args = parser.parse_args()
+
+
+main()
+
+
+
