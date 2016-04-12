@@ -4,7 +4,9 @@
 Creator: @ZephrFish 
 
 Description 
-=========== A tool for automation of screen shotting a list of URLs and outputing information about target hosts based upon headers and responses. 
+=========== 
+
+A tool for automation of screen shotting a list of URLs and outputing information about target hosts based upon headers and responses. 
 
 Usage: python autopeeper.py [-h] [FILE] [OUTDIR] [--verbose]
 
