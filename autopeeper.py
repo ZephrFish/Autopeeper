@@ -62,7 +62,7 @@ def singleURL():
         single.append('http://' + url + ':' + str(port))
         verbose(single)
     for target in single:
-        os.system('cutycapt --url=%r --out=%r --delay=100' % (target, outdir))
+        os.system('cutycapt --url=%r --out=%r/test_single.png --delay=100' % (target, outdir))
 
 # File Mode
 def file():
@@ -78,7 +78,7 @@ def file():
              domains.append('http://' + str(domain) + ':' + str(port))
              verbose(domains)
     for target in domains:
-        os.system('cutycapt --url=%r --out=%r --delay=100' % (target, outdir))
+        os.system('cutycapt --url=%r --out=%r/test_single.png --delay=100' % (target, outdir))
 
 # Verbose Mode
 def verbose(v):
