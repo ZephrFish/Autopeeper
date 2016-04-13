@@ -1,3 +1,11 @@
+# Autopeeper v0.24
+# @ZephrFish
+# Still a work in progress
+#
+#
+#
+#
+
 import argparse
 import subprocess
 import os
@@ -9,15 +17,15 @@ outdir = ''
 
 # Autopeeper Logo Echo
 print('''
-                _                                                 ___   ___  _____ 
-     /\        | |                                               / _ \ |__ \| ____|
-    /  \  _   _| |_ ___  _ __   ___  ___ _ __   ___ _ __  __   _| | | |   ) | |__  
-   / /\ \| | | | __/ _ \| '_ \ / _ \/ _ \ '_ \ / _ \ '__| \ \ / / | | |  / /|___ \ 
-  / ____ \ |_| | || (_) | |_) |  __/  __/ |_) |  __/ |     \ V /| |_| | / /_ ___) |
- /_/    \_\__,_|\__\___/| .__/ \___|\___| .__/ \___|_|      \_/  \___(_)____|____/ 
-                        | |             | |                                        
-                        |_|             |_|                                        
-  @ZephrFish v0.25
+                _                                                 ___   ___  _  _
+     /\        | |                                               / _ \ |__ \| || |
+    /  \  _   _| |_ ___  _ __   ___  ___ _ __   ___ _ __  __   _| | | |   ) | || |_
+   / /\ \| | | | __/ _ \| '_ \ / _ \/ _ \ '_ \ / _ \ '__| \ \ / / | | |  / /|__   _|
+  / ____ \ |_| | || (_) | |_) |  __/  __/ |_) |  __/ |     \ V /| |_| | / /_   | |
+ /_/    \_\__,_|\__\___/| .__/ \___|\___| .__/ \___|_|      \_/  \___(_)____|  |_|
+                        | |             | |
+                        |_|             |_|
+@ZephrFish v0.24
 
 ''')
 def whereiscutycapt(name):
@@ -42,20 +50,25 @@ def initialize():
         print('[!] initialized...')
 
 # Single Target Mode
-def screener():
-    portList = [80,443,5800,8080,9090,10000]
+# File Mode
+def file():
+  if args.url:
+    targets = args.url
+  elif args.infile:
+    targets = open(args.infile, 'r').readlines()
     domains=[]
-    if args.url:
-        targets = args.url
-    else:
-        targets = open(args.infile, 'r').readlines()
-    for port in portList:
-        for target in targets:
-            verbose('[+] hosts running on port %r' % str(port))
-            domains.append('https://' + str(target) + ':'+ str(port))
-            domains.append('http://' + str(target) + ':' + str(port))
-    for domain in domains:
-        os.system('cutycapt --url=%r --out=%r --delay=100' % (domain, outdir))
+    for domain in targets:
+         portList = [80,443,5800,8080,9090,10000]
+         for port in portList:
+             verbose('Target Port %r' % str(port))
+             verbose('https://' + str(domain) + ':'+ str(port))
+             verbose('http://' + str(domain) + ':'+ str(port))
+             domains.append('https://' + str(domain) + ':'+ str(port))
+             domains.append('http://' + str(domain) + ':' + str(port))
+             verbose(domains)
+    for target in domains:
+        cmd = 'cutycapt --url={0} --out={1}/{0}.png --delay=100'.format(target, args.outdir)
+        os.system(cmd)
 
 # Verbose Mode
 def verbose(v):
@@ -65,8 +78,16 @@ def verbose(v):
 def main():
     # Check Dependencies
     initialize()
-    screener()
-    if args.null:
+
+    # Single URL Mode
+    if args.url:
+        verbose('[!] Single URL Mode Enabled')
+        singleURL()
+    # File Mode
+    elif args.infile:
+        verbose('[!] Batch Mode Enabled')
+        file()
+    else:
         print('[!] No Flags Given')
         print('[!] Quitting...')
         quit()
@@ -78,16 +99,17 @@ if __name__ == "__main__":
         prog="lister.py",
         usage='%(prog)s [options]'
     )
-    # Required Parameters
-    parser.add_argument("infile", help='targets file to scan & screenshot')
-    parser.add_argument("outdir",help='output directory for results')
-
-
-    # Debug & Verbose Mode
-    parser.add_argument('--verbose', action='store_true', help='turn on verbose mode')
-    parser.add_argument('--debug', action='store_true', help='turn on debug')
-    parser.add_argument('--url', action='store_true', help='Single URL Mode')
+    # Parameters
+    need = parser.add_mutually_exclusive_group()
+    need.add_argument('-f', '--file', dest='infile', help='targets file to scan & screenshot')
+    need.add_argument('-u', '--url', dest='url', action='store_true', help='Single URL Mode')
+    parser.add_argument('-o', '--outdir', dest='outdir', help='output directory for results')
+    parser.add_argument('-v', '--verbose', dest='verbose', action='store_true', help='turn on verbose mode')
+    parser.add_argument('-d', '--debug', dest='debug', action='store_true', help='turn on debug')
     args = parser.parse_args()
 
 
 main()
+
+
+
