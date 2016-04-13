@@ -88,8 +88,7 @@ def main():
         verbose('[!] Batch Mode Enabled')
         file()
     else:
-        print('[!] No Flags Given')
-        print('[!] Quitting...')
+        print(args.help)
         quit()
 
 # Argument Parsing
