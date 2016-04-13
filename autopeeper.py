@@ -1,11 +1,7 @@
 # Autopeeper v0.24
 # @ZephrFish
 # Still a work in progress
-#
-#
-#
-#
-
+# Define Libraties and Modules to import
 import argparse
 import subprocess
 import os
@@ -28,6 +24,8 @@ print('''
 @ZephrFish v0.24
 
 ''')
+
+# Look for cutycapt binary on system
 def whereiscutycapt(name):
     try:
         devnull = open(os.devnull)
@@ -36,7 +34,8 @@ def whereiscutycapt(name):
         if e.errno == os.errno.ENOENT:
             return False
     return True
-
+    
+# If not installed, install cutycapt and set it up
 def initialize():
     if whereiscutycapt(cutycapt)==False:
         verbose('[+] Setting up dependencies')
@@ -49,8 +48,7 @@ def initialize():
     else:
         print('[!] initialized...')
 
-# Single Target Mode
-# File Mode
+# Single & File Mode
 def file():
   if args.url:
     targets = args.url
@@ -75,6 +73,7 @@ def verbose(v):
     if args.verbose:
         print(v)
 
+# Main function body
 def main():
     # Check Dependencies
     initialize()
