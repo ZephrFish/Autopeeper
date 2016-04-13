@@ -1,11 +1,3 @@
-# Autopeeper v0.24
-# @ZephrFish
-# Still a work in progress
-#
-#
-#
-#
-
 import argparse
 import subprocess
 import os
@@ -50,35 +42,20 @@ def initialize():
         print('[!] initialized...')
 
 # Single Target Mode
-def singleURL():
-    url = input("Enter URL>")
-    single=[]
+def screener():
     portList = [80,443,5800,8080,9090,10000]
-    for port in portList:
-        verbose('[+] hosts running on port %r' % str(port))
-        verbose('https://' + url + ':'+ str(port))
-        verbose('http://' + url + ':' + str(port))
-        single.append('https://' + url + ':'+ str(port))
-        single.append('http://' + url + ':' + str(port))
-        verbose(single)
-    for target in single:
-        os.system('cutycapt --url=%r --out=%r/test_single.png --delay=100' % (target, outdir))
-
-# File Mode
-def file():
-    targets = open(infile, 'r').readlines()
     domains=[]
-    for domain in targets:
-         portList = [80,443,5800,8080,9090,10000]
-         for port in portList:
-             verbose('Target Port %r' % str(port))
-             verbose('https://' + str(domain) + ':'+ str(port))
-             verbose('http://' + str(domain) + ':'+ str(port))
-             domains.append('https://' + str(domain) + ':'+ str(port))
-             domains.append('http://' + str(domain) + ':' + str(port))
-             verbose(domains)
-    for target in domains:
-        os.system('cutycapt --url=%r --out=%r/test_single.png --delay=100' % (target, outdir))
+    if args.url:
+        targets = url.args
+    else:
+        targets = open(infile, 'r').readlines()
+    for port in portList:
+        for target in targets:
+            verbose('[+] hosts running on port %r' % str(port))
+            domains.append('https://' + str(target) + ':'+ str(port))
+            domains.append('http://' + str(target) + ':' + str(port))
+    for domain in domains:
+        os.system('cutycapt --url=%r --out=%r --delay=100' % (domain, outdir))
 
 # Verbose Mode
 def verbose(v):
@@ -88,16 +65,8 @@ def verbose(v):
 def main():
     # Check Dependencies
     initialize()
-
-    # Single URL Mode
-    if args.url:
-        verbose('[!] Single URL Mode Enabled')
-        singleURL()
-    # File Mode
-    elif args.infile:
-        verbose('[!] Batch Mode Enabled')
-        file()
-    else:
+    screener()
+    if args.null:
         print('[!] No Flags Given')
         print('[!] Quitting...')
         quit()
@@ -122,6 +91,3 @@ if __name__ == "__main__":
 
 
 main()
-
-
-
