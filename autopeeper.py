@@ -46,9 +46,9 @@ def screener():
     portList = [80,443,5800,8080,9090,10000]
     domains=[]
     if args.url:
-        targets = url.args
+        targets = args.url
     else:
-        targets = open(infile, 'r').readlines()
+        targets = open(args.infile, 'r').readlines()
     for port in portList:
         for target in targets:
             verbose('[+] hosts running on port %r' % str(port))
