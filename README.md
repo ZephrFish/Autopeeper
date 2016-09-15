@@ -1,5 +1,5 @@
 # Autopeeper 
-## Version: 0.25
+## Version: 0.25 [Work In Progress]
 
 Creator: @ZephrFish 
 
@@ -13,6 +13,10 @@ Usage:
 > python autopeeper.py -h 
 
 
+# Plans
+- Integrate NMAP Parsing to take .xml and append ports to urls
+- Output screencaps to usable xml format with jpegs in an images folder
+- make fully headless to run on VPS or other servers
 
 
 
