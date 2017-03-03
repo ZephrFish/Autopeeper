@@ -1,4 +1,4 @@
-# Autopeeper v0.25
+# Autopeeper v0.01
 # @ZephrFish
 # Still a work in progress
 # Define Libraties and Modules to import
@@ -11,18 +11,6 @@ import sys
 infile = ''
 outdir = ''
 
-# Autopeeper Logo Echo
-print('''
-                _                                                 ___   ___  _____ 
-     /\        | |                                               / _ \ |__ \| ____|
-    /  \  _   _| |_ ___  _ __   ___  ___ _ __   ___ _ __  __   _| | | |   ) | |__  
-   / /\ \| | | | __/ _ \| '_ \ / _ \/ _ \ '_ \ / _ \ '__| \ \ / / | | |  / /|___ \ 
-  / ____ \ |_| | || (_) | |_) |  __/  __/ |_) |  __/ |     \ V /| |_| | / /_ ___) |
- /_/    \_\__,_|\__\___/| .__/ \___|\___| .__/ \___|_|      \_/  \___(_)____|____/ 
-                        | |             | |                                        
-                        |_|             |_|                                        
-  @ZephrFish v0.25
-''')
 
 # Look for cutycapt binary on system
 def whereiscutycapt(name):
