@@ -68,7 +68,8 @@ def main():
     # Single URL Mode
     if args.url:
         verbose('[!] Single URL Mode Enabled')
-        singleURL()
+        #singleURL() Doesn't exists
+        file()
     # File Mode
     elif args.infile:
         verbose('[!] Batch Mode Enabled')
